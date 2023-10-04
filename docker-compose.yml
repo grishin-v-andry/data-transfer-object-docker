@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  php:
+    user: "${UID}:${GID}"
+    container_name : php_dto
+    build:
+      context: ./images/php
+      args:
+        USER_UID: ${UID}
+        USER_GID: ${GID}
+    volumes:
+        - ./src:/var/www/html/
+    environment:
+      - COMPOSER_MEMORY_LIMIT=-1
+    networks:
+      - dto-network
+
+networks:
+  dto-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${NETWORK_SUBNET}
+          gateway: ${NETWORK_GATEWAY}
